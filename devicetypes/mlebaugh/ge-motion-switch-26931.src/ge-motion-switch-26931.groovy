@@ -1,8 +1,7 @@
 /**
- *  GE Motion Dimmer Switch
+ *  GE Motion Switch 26931
  *	Author: Matt lebaugh (@mlebaugh)
  *
- * Based off of the Dimmer Switch under Templates in the IDE 
  * Copyright (C) Matt LeBaugh
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -114,7 +113,7 @@ metadata {
             )
             input (
                 name: "invertSwitch",
-                title: "Switch Orentation",
+                title: "Switch Orientation",
                 type: "enum",
                 options: [
                     "0" : "Normal",
@@ -276,7 +275,7 @@ def zwaveEvent(physicalgraph.zwave.commands.configurationv2.ConfigurationReport 
     } else if (cmd.parameterNumber == 6) {
     	def value = config == 0 ? "Disabled" : "Enabled"
     	result << createEvent([name:"MotionSensor", value: value, displayed:true, isStateChange:true])
-    } else if (cmd.parameterNumber == 4) {
+    } else if (cmd.parameterNumber == 5) {
     	def value = config == 0 ? "Normal" : "Inverted"
     	result << createEvent([name:"SwitchOrientation", value: value, displayed:true, isStateChange:true])
     } 
@@ -441,8 +440,8 @@ def updated() {
         cmds << zwave.configurationV1.configurationGet(parameterNumber: 3)
         if (settings.motion) {cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.motion.toInteger()], parameterNumber: 6, size: 1)}
         cmds << zwave.configurationV1.configurationGet(parameterNumber: 6)
-        if (settings.invertSwitch) {cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.invertSwitch.toInteger()], parameterNumber: 4, size: 1)}
-        cmds << zwave.configurationV1.configurationGet(parameterNumber: 4)
+        if (settings.invertSwitch) {cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.invertSwitch.toInteger()], parameterNumber: 5, size: 1)}
+        cmds << zwave.configurationV1.configurationGet(parameterNumber: 5)
 		
         // Make sure lifeline is associated - was missing on a dimmer:
 		cmds << zwave.associationV1.associationSet(groupingIdentifier:0, nodeId:zwaveHubNodeId)

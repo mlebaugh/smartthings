@@ -91,7 +91,7 @@ metadata {
                 ]
             )
             //param 5
-            input ("invertSwitch","enum",title: "Switch Orentation",
+            input ("invertSwitch","enum",title: "Orientation",
                 options: [
                     "0" : "Normal",
                     "1" : "Inverted",
@@ -323,7 +323,7 @@ def zwaveEvent(physicalgraph.zwave.commands.configurationv2.ConfigurationReport 
     } else if (cmd.parameterNumber == 6) {
     	def value = config == 0 ? "Disabled" : "Enabled"
     	result << createEvent([name:"MotionSensor", value: value, displayed:true, isStateChange:true])
-    } else if (cmd.parameterNumber == 4) {
+    } else if (cmd.parameterNumber == 5) {
     	def value = config == 0 ? "Normal" : "Inverted"
     	result << createEvent([name:"SwitchOrientation", value: value, displayed:true, isStateChange:true])
     } 
@@ -604,10 +604,10 @@ def updated() {
         	cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.motion.toInteger()], parameterNumber: 6, size: 1)
         	cmds << zwave.configurationV1.configurationGet(parameterNumber: 6)
         }
-        //param 4 invert switch
+        //param 5 invert switch
         if (settings.invertSwitch) {
-        	cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.invertSwitch.toInteger()], parameterNumber: 4, size: 1)
-        	cmds << zwave.configurationV1.configurationGet(parameterNumber: 4)
+        	cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.invertSwitch.toInteger()], parameterNumber: 5, size: 1)
+        	cmds << zwave.configurationV1.configurationGet(parameterNumber: 5)
 		}
         //association groups
 			cmds << zwave.associationV1.associationSet(groupingIdentifier:0, nodeId:zwaveHubNodeId)
@@ -659,7 +659,7 @@ def updated() {
         //switch mode param 16
         if (settings.switchmode == 0) {
         	cmds << zwave.configurationV1.configurationSet(configurationValue: [0], parameterNumber: 16, size: 1)
-        } else {
+        } else if (settings.switchmode) {
         	cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.switchmode.toInteger()], parameterNumber: 16, size: 1)
         }
         cmds << zwave.configurationV1.configurationGet(parameterNumber: 16)
