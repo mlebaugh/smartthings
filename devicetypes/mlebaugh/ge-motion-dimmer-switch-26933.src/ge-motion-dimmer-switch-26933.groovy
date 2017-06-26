@@ -221,12 +221,12 @@ metadata {
 			state "default", label:'', action:"refresh.refresh", icon:"st.secondary.refresh"
 		}
               
-		standardTile("operatingmode", "device.operatingmode", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-			state "default", label:'Mode: ${currentValue} tap to toggle', unit:"", action:"toggleMode"
+		standardTile("operatingMode", "device.operatingMode", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", label:'Mode toggle: ${currentValue}', unit:"", action:"toggleMode"
 		}
 
 		main(["switch"])
-		details(["switch", "motion", "operatingmode", "refresh"])
+		details(["switch", "motion", "operatingMode", "refresh"])
 
 	}
 }
