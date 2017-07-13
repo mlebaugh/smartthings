@@ -666,7 +666,7 @@ def updated() {
         //switch level param 17
         if (settings.switchlevel == 0) {
         	cmds << zwave.configurationV1.configurationSet(configurationValue: [0], parameterNumber: 17, size: 1)
-        } else {
+        } else if (settings.switchlevel) {
         	cmds << zwave.configurationV1.configurationSet(configurationValue: [settings.switchlevel.toInteger()], parameterNumber: 17, size: 1)
         }
         cmds << zwave.configurationV1.configurationGet(parameterNumber: 17)
