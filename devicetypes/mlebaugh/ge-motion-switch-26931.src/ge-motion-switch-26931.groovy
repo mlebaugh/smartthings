@@ -31,6 +31,8 @@ metadata {
         command "Occupancy"
         command "Vacancy"
         command "Manual"
+        command "LightSenseOn"
+        command "LightSenseOff"
         
         attribute "operatingMode", "enum", ["Manual", "Vacancy", "Occupancy"]
 
@@ -414,6 +416,20 @@ def cmds = []
     cmds << zwave.configurationV1.configurationGet(parameterNumber: 3)
         sendHubCommand(cmds.collect{ new physicalgraph.device.HubAction(it.format()) }, 1000)
 
+}
+
+def LightSenseOn() {
+	log.debug("Setting Light Sense On") 
+    def cmds = []
+    	cmds << zwave.configurationV1.configurationSet(configurationValue: [1], parameterNumber: 14, size: 1)
+    sendHubCommand(cmds.collect{ new physicalgraph.device.HubAction(it.format()) }, 1000)
+}
+
+def LightSenseOff() {
+	log.debug("Setting Light Sense Off") 
+    def cmds = []
+    	cmds << zwave.configurationV1.configurationSet(configurationValue: [0], parameterNumber: 14, size: 1)
+    sendHubCommand(cmds.collect{ new physicalgraph.device.HubAction(it.format()) }, 1000)
 }
 
 def installed() {
